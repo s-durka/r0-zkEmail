@@ -3,7 +3,23 @@ use mailparse::parse_mail;
 use risc0_zkvm::guest::env;
 use sha2::{Digest, Sha256};
 use slog::{o, Discard, Logger};
-use zkemail_core::{DKIMOutput, Email};
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Email {
+    pub from_domain: String,
+    pub raw_email: Vec<u8>,
+    pub public_key_type: String,
+    pub public_key: Vec<u8>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct DKIMOutput {
+    pub from_domain_hash: Vec<u8>,
+    pub public_key_hash: Vec<u8>,
+    pub verified: bool,
+}
+
 
 fn main() {
     let input: Vec<u8> = env::read_frame();

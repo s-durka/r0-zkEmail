@@ -29,6 +29,7 @@ RISC0_DEV_MODE=1 RUST_LOG=info cargo run --release -- <FROM_DOMAIN> <EMAIL_PATH>
 
 ```
 RISC0_DEV_MODE=1 RUST_LOG=info cargo run --release -- example.com example.eml
+RISC0_DEV_MODE=1 RUST_LOG=info cargo run --release -- gmail.com emails/eluwinka.eml
 ```
 
 ## Disclaimer

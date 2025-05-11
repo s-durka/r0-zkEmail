@@ -1,0 +1,10 @@
+{
+  "name": "dkim_verify",
+  "binaryPath": "./methods/guest/target/riscv-guest/riscv32im-risc0-zkvm-elf/docker/dkim_verify/dkim_verify",
+  "imageId": "24174547477261ecf6f1a1be4fba26371704fa3e2d66e34b44909a3bbec228bf",
+  "inputOrder": [
+    "Public"
+  ],
+  "signature": "4FPYRH4uxj5DxhAa6fq6ZJnomG9sAurWtx7UHfcRW5SKerznM1AqXKzBpKTbXzC1kGpuXWRTXECQdzmD418uxp46",
+  "size": 954808
+}
