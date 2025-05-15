@@ -11,6 +11,7 @@ use slog::{o, Discard, Logger};
 use zkemail_core::{DKIMOutput, Email};
 use std::{env, fs::File, io::Read, path::PathBuf};
 use trust_dns_resolver::TokioAsyncResolver;
+use input_server::{run_server, ServerArg};
 
 async fn verify_email(from_domain: &str, email_path: &PathBuf) -> Result<()> {
     let logger = Logger::root(Discard, o!());
@@ -91,6 +92,10 @@ async fn verify_email(from_domain: &str, email_path: &PathBuf) -> Result<()> {
                     .ok_or_else(|| anyhow!("No public key extracted"))?,
             };
 
+            // runs the inputs server and prevents further execution (risc0 local proof)
+            // remove this line to enable local proof generation & verification
+            generate_bonsol_inputs(&email_proof);
+
             generate_and_verify_proof(prover.as_ref(), email_proof)?;
             Ok(())
         }
@@ -112,10 +117,24 @@ fn read_email_file(path: &PathBuf) -> Result<String> {
     Ok(contents)
 }
 
+fn generate_bonsol_inputs(email: &Email) {
+    let input = postcard::to_allocvec(&email).unwrap();
+
+    println!("Running input server with the email data...");
+    let input_server_args = vec![
+        ServerArg {
+            bytes: input.clone(),
+            url: "/email".to_string(),
+        },
+    ];
+
+    run_server(input_server_args);
+}
+
 fn generate_and_verify_proof(prover: &dyn Prover, email: Email) -> Result<()> {
     debug!("Starting ZK proof generation");
-
     let input = postcard::to_allocvec(&email).unwrap();
+
     let env = ExecutorEnv::builder()
         .write_frame(&input)
         .build()
