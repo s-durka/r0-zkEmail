@@ -32,6 +32,17 @@ RISC0_DEV_MODE=1 RUST_LOG=info cargo run --release -- example.com example.eml
 RISC0_DEV_MODE=1 RUST_LOG=info cargo run --release -- gmail.com emails/eluwinka.eml
 ```
 
+### Bonsol
+```
+cd methods/guest
+bonsol build --zk-program-path .
+# ...start bonsol's validator.sh and local-program-server...
+bonsol deploy url --url http://localhost:8080 -m manifest.json
+# ...copy imageId from manifest.json execution_request.json...
+# ...run bonsol input server...
+bonsol execute -f execution_request.json --wait
+```
+
 ## Disclaimer
 Use it at your own risk. This repository is experimental and unaudited. Do not use in production. 
 
