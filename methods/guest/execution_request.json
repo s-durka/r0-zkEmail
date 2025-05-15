@@ -1,0 +1,15 @@
+{
+  "imageId": "64dc4490f4644fa5b9fd08645b6508bb0825d963576d2ed97b7e2b9616e15282",
+  "executionConfig": {
+    "verifyInputHash": false,
+    "forwardOutput": true
+  },
+  "inputs": [
+    {
+      "inputType": "PublicUrl",
+      "data": "http://127.0.0.1:8000/email"
+    }
+  ],
+  "tip": 12000,
+  "expiry": 1000
+}

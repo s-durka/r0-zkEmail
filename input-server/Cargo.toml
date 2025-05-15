@@ -1,0 +1,8 @@
+[package]
+name = "input-server"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+byteorder = "1.5.0"
+rouille = "3.6.2"

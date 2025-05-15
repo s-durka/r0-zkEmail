@@ -3,11 +3,33 @@ use mailparse::parse_mail;
 use risc0_zkvm::guest::env;
 use sha2::{Digest, Sha256};
 use slog::{o, Discard, Logger};
-use zkemail_core::{DKIMOutput, Email};
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Email {
+    pub from_domain: String,
+    pub raw_email: Vec<u8>,
+    pub public_key_type: String,
+    pub public_key: Vec<u8>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct DKIMOutput {
+    pub from_domain_hash: Vec<u8>,
+    pub public_key_hash: Vec<u8>,
+    pub verified: bool,
+}
+
 
 fn main() {
     let input: Vec<u8> = env::read_frame();
     let input: Email = postcard::from_bytes(&input).unwrap();
+
+    println!("From domain: {:?}", &input.from_domain);
+    println!("Pubkey type: {:?}", &input.public_key_type);
+    println!("Pubkey: {:?}", &input.public_key);
+    let raw_email_string = std::str::from_utf8(&input.raw_email).unwrap();
+    println!("Raw email: {:?}", raw_email_string);
 
     let logger = Logger::root(Discard, o!());
 
