@@ -1,5 +1,5 @@
 {
-  "imageId": "64dc4490f4644fa5b9fd08645b6508bb0825d963576d2ed97b7e2b9616e15282",
+  "imageId": "a292f332446d2d964251b9203b83f3dcfd45421d212f3917e50e8fd8b3768f63",
   "executionConfig": {
     "verifyInputHash": false,
     "forwardOutput": true
@@ -10,6 +10,10 @@
       "data": "http://127.0.0.1:8000/email"
     }
   ],
+  "callbackConfig": {
+    "programId": "AqSt8YPVacLGQQc2AqXVmuKgEzKk7dqws7DscqoxwWWD",
+    "instructionPrefix": [181, 16, 138, 77, 227, 78, 167, 151]
+  },
   "tip": 12000,
   "expiry": 1000
 }

@@ -23,13 +23,15 @@ pub struct DKIMOutput {
 
 fn main() {
     let input: Vec<u8> = env::read_frame();
-    let input: Email = postcard::from_bytes(&input).unwrap();
+    println!("Input: {:?}", &input);
 
-    println!("From domain: {:?}", &input.from_domain);
-    println!("Pubkey type: {:?}", &input.public_key_type);
-    println!("Pubkey: {:?}", &input.public_key);
-    let raw_email_string = std::str::from_utf8(&input.raw_email).unwrap();
-    println!("Raw email: {:?}", raw_email_string);
+    // let input: Email = postcard::from_bytes(&input).unwrap();
+
+    // println!("From domain: {:?}", &input.from_domain);
+    // println!("Pubkey type: {:?}", &input.public_key_type);
+    // println!("Pubkey: {:?}", &input.public_key);
+    // let raw_email_string = std::str::from_utf8(&input.raw_email).unwrap();
+    // println!("Raw email: {:?}", raw_email_string);
 
     // let logger = Logger::root(Discard, o!());
 
@@ -60,8 +62,8 @@ fn main() {
     //     verified,
     // };
     let output = DKIMOutput {
-        from_domain_hash: vec![],
-        public_key_hash: vec![],
+        from_domain_hash: vec![0; 20],
+        public_key_hash: vec![0; 20],
         verified: false,
     };
     env::commit(&output);

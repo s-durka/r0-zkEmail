@@ -12,6 +12,8 @@ use zkemail_core::{DKIMOutput, Email};
 use std::{env, fs::File, io::Read, path::PathBuf};
 use trust_dns_resolver::TokioAsyncResolver;
 use input_server::{run_server, ServerArg};
+use sha2::{Digest, Sha256};
+
 
 async fn verify_email(from_domain: &str, email_path: &PathBuf) -> Result<()> {
     let logger = Logger::root(Discard, o!());
@@ -94,7 +96,7 @@ async fn verify_email(from_domain: &str, email_path: &PathBuf) -> Result<()> {
 
             // runs the inputs server and prevents further execution (risc0 local proof)
             // remove this line to enable local proof generation & verification
-            generate_bonsol_inputs(&email_proof);
+            // generate_bonsol_inputs(&email_proof);
 
             generate_and_verify_proof(prover.as_ref(), email_proof)?;
             Ok(())
@@ -156,22 +158,41 @@ fn generate_and_verify_proof(prover: &dyn Prover, email: Email) -> Result<()> {
     Ok(())
 }
 
+fn get_discriminator(instruction_name: &str) -> [u8; 8] {
+    let mut hasher = Sha256::new();
+    hasher.update(format!("global:{}", instruction_name));
+    let hash = hasher.finalize();
+    let mut discriminator = [0u8; 8];
+    discriminator.copy_from_slice(&hash[..8]);
+    discriminator
+}
+
 #[tokio::main]
 async fn main() -> Result<()> {
     tracing_subscriber::fmt()
         .with_env_filter(tracing_subscriber::filter::EnvFilter::from_default_env())
         .init();
-
+    
+    let instruction_prefix = get_discriminator("bonsol_callback");
+    println!("Instruction prefix: {:?}", instruction_prefix);
     let args: Vec<String> = env::args().collect();
     if args.len() != 3 {
         return Err(anyhow!("Usage: {} <from_domain> <email_path>", args[0]));
     }
 
-    let from_domain = &args[1];
-    let email_path = PathBuf::from(&args[2]);
+    let args = vec![
+        ServerArg {
+            bytes: vec![1, 2, 3, 4],
+            url: "/email".to_string(),
+        }
+    ];
+    run_server(args);
 
-    verify_email(from_domain, &email_path).await?;
-    println!("Email verification and proof generation completed successfully");
+    // let from_domain = &args[1];
+    // let email_path = PathBuf::from(&args[2]);
+
+    // verify_email(from_domain, &email_path).await?;
+    // println!("Email verification and proof generation completed successfully");
 
     Ok(())
 }
