@@ -31,18 +31,3 @@ pub fn run_server(args: Vec<ServerArg>) {
         rouille::Response::empty_404()
     });
 }
-
-// fn main() {
-//     let args = vec![
-//         ServerArg {
-//             bytes: vec![1, 2, 3, 4],
-//             url: "/input1".to_string(),
-//         },
-//         ServerArg {
-//             bytes: vec![5, 6, 7, 8],
-//             url: "/input2".to_string(),
-//         },
-//     ];
-
-//     run_server(args);
-// }

@@ -17,6 +17,12 @@ no-log-ix-name = []
 idl-build = ["anchor-lang/idl-build"]
 
 
+
+
 [dependencies]
 anchor-lang = "0.31.1"
+bonsol-anchor-interface = { git = "https://github.com/bonsol-collective/bonsol-anchor-interface.git" }
 
+[patch."https://github.com/bonsol-collective/bonsol-anchor-interface.git"]
+anchor-lang = "0.31.1"
+solana-program = "^2"
