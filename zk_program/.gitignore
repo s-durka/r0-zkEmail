@@ -16,4 +16,5 @@ target/
 testdata/**
 /profile.pb
 
-emails/
+**/*.eml
+**/emails/
