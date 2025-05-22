@@ -1,22 +1,16 @@
-# RISC Zero zkEmail
+# Solana email proofs
 
-This repository contains a RISC Zero project to verify DKIM signatures. With r0-zkEmail, email authenticity can be verified through zero-knowledge proofs, removing the need for direct access to email content. Instead, zk-DKIM generates cryptographic proofs that confirm the signature’s validity while keeping sensitive data private.
+Verify email authenticity with zero-knowledge proofs and retrieve the result in Solana
 
-## Installation
-
-Clone the repository and navigate into it. 
-
-```
-git clone https://github.com/risc0-labs/r0-zkEmail.git
-
-cd r0-zkEmail
-```
+> ⚠️ **In development**  — to see latest updates and information on how to run *Solana email proofs*, check out the `anchor` branch.
 
 ## Usage
 
 To run the program, we need to download an email. In Google Mail, navigate to an email and use the hamburger menu to download the `.eml` file associated with the email. We then need to run our host, which will accept the domain and path to the email in order to verify the DKIM header. 
 
+You can test the zk program *locally (without Bonsol)* by running:
 ```
+cd zk_program/
 RISC0_DEV_MODE=1 RUST_LOG=info cargo run --release -- <FROM_DOMAIN> <EMAIL_PATH>
 ```
 
@@ -28,19 +22,7 @@ RISC0_DEV_MODE=1 RUST_LOG=info cargo run --release -- <FROM_DOMAIN> <EMAIL_PATH>
 ### Example
 
 ```
-RISC0_DEV_MODE=1 RUST_LOG=info cargo run --release -- example.com example.eml
-RISC0_DEV_MODE=1 RUST_LOG=info cargo run --release -- gmail.com emails/eluwinka.eml
-```
-
-### Bonsol
-```
-cd methods/guest
-bonsol build --zk-program-path .
-# ...start bonsol's validator.sh and local-program-server...
-bonsol deploy url --url http://localhost:8080 -m manifest.json
-# ...copy imageId from manifest.json execution_request.json...
-# ...run bonsol input server...
-bonsol execute -f execution_request.json --wait
+RISC0_DEV_MODE=1 RUST_LOG=info cargo run --release -- gmail.com example.eml
 ```
 
 ## Disclaimer
